@@ -1,5 +1,6 @@
 package com.example.taxi_bot.bot;
 
+import com.example.taxi_bot.services.GeoPositionService;
 import com.example.taxi_bot.services.MainMenuServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,12 +24,17 @@ public class TelegramFacade {
     @Autowired
     private List<MessageHandler> messageHandlerList;
 
+    @Autowired
+    private GeoPositionService service;
+
 
     @Autowired
     private UserData userData;
 
     public SendMessage handleUpdate(Update update) {
         SendMessage botAnswer = null;
+
+        service.getCoordinates(update.getMessage().getText());
 
         if (update.hasMessage()){
             botAnswer = handleInputMessage(update.getMessage());

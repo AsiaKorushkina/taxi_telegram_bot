@@ -30,8 +30,10 @@ public class GeoPositionServiceImpl implements GeoPositionService {
 
     @Override
     public Object getCoordinates(String address) {
-        String endpoint = geoUrl.replace("{$geoAddress}", address.replace(' ', '+'));
-        ResponseEntity<String> responseEntity = restTemplate.exchange(endpoint, HttpMethod.POST, null, String.class);
+        String endpoint = geoUrl.replace("{$address}", address.replace(' ', '+'));
+        ResponseEntity<String> responseEntity = restTemplate.exchange(endpoint, HttpMethod.GET, null, String.class);
         return responseEntity;
     }
 }
+
+
