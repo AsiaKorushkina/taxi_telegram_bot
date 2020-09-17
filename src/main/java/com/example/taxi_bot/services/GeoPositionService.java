@@ -1,5 +1,7 @@
 package com.example.taxi_bot.services;
 
+import com.example.taxi_bot.model.Coordinates;
+
 public interface GeoPositionService {
-    Object getCoordinates(String address);
+    Coordinates getCoordinates(String address);
 }

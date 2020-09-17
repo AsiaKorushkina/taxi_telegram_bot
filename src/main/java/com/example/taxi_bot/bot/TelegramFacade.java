@@ -1,9 +1,12 @@
 package com.example.taxi_bot.bot;
 
+import com.example.taxi_bot.model.Coordinates;
 import com.example.taxi_bot.services.GeoPositionService;
 import com.example.taxi_bot.services.MainMenuServices;
+import com.example.taxi_bot.services.TaxiService;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -35,10 +38,16 @@ public class TelegramFacade {
     @Autowired
     private UserData userData;
 
+    @Autowired
+    private TaxiService yandexTaxiService;
+
     public SendMessage handleUpdate(Update update) {
         SendMessage botAnswer = null;
 
-        service.getCoordinates(update.getMessage().getText());
+        Coordinates coordinates = service.getCoordinates(update.getMessage().getText());
+
+        yandexTaxiService.getPrices(Pair.of(coordinates, coordinates));
+
 
         if (update.hasMessage()){
             botAnswer = handleInputMessage(update.getMessage());

@@ -3,16 +3,15 @@ package com.example.taxi_bot.model;
 import lombok.Builder;
 import lombok.Getter;
 
+import javax.swing.*;
+
 @Builder
 @Getter
 public class Coordinates {
 
-    private final Double upperCornerLatitude;
+    private final String Latitude;
 
-    private final Double upperCornerLongitude;
+    private final String Longitude;
 
-    private final Double lowerCornerLongitude;
-
-    private final Double lowerCornerLatitude;
 
 }

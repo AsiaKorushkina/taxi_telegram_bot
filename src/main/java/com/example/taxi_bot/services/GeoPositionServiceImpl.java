@@ -1,12 +1,19 @@
 package com.example.taxi_bot.services;
 
+import com.example.taxi_bot.model.Coordinates;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 
 import javax.annotation.PostConstruct;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.StringReader;
 
 @Component
 public class GeoPositionServiceImpl implements GeoPositionService {
@@ -29,11 +36,25 @@ public class GeoPositionServiceImpl implements GeoPositionService {
     }
 
     @Override
-    public Object getCoordinates(String address) {
+    public Coordinates getCoordinates(String address) {
         String endpoint = geoUrl.replace("{$address}", address.replace(' ', '+'));
         ResponseEntity<String> responseEntity = restTemplate.exchange(endpoint, HttpMethod.GET, null, String.class);
-        return responseEntity;
+        return extractCoordinates(responseEntity.getBody());
     }
+
+    @SneakyThrows
+    private Coordinates extractCoordinates(String xmlSource){
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Element elem = builder.parse(new InputSource(new StringReader(xmlSource))).getDocumentElement();
+        String pos = elem.getElementsByTagName("pos").item(0).getChildNodes().item(0).getNodeValue();
+        return Coordinates.builder()
+                .Latitude(pos.split(" ")[0])
+                .Longitude(pos.split(" ")[1])
+                .build();
+    }
+
 }
 
 
