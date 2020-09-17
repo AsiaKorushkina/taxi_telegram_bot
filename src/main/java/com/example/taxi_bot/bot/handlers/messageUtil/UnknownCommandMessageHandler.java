@@ -2,7 +2,10 @@ package com.example.taxi_bot.bot.handlers.messageUtil;
 
 import com.example.taxi_bot.bot.BotState;
 import com.example.taxi_bot.bot.MessageHandler;
+import com.example.taxi_bot.bot.UserData;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -11,11 +14,16 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 @Getter
 public class UnknownCommandMessageHandler implements MessageHandler {
 
-    private BotState botState = BotState.UNKNOWN_COMMAND;
-    private MessageType messageType = MessageType.UNKNOWN;
+    @Autowired
+    private UserData userData;
 
+    private BotState botState = BotState.UNKNOWN_COMMAND;
+
+    @Value("${reply.alarm}")
+    private String replyMessage;
     @Override
     public SendMessage handle(Message message) {
-        return new SendMessage(message.getChatId(), "Ты что-то попутал.");
+        userData.setUsersBotStates(message.getFrom().getId(), null);
+        return new SendMessage(message.getChatId(), replyMessage);
     }
 }

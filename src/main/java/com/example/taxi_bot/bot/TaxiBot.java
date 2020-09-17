@@ -28,10 +28,13 @@ public class TaxiBot extends TelegramLongPollingBot {
     @SneakyThrows
     public void onUpdateReceived(Update update) {
         SendMessage botAnswer = telegramFacade.handleUpdate(update);
+        BotState botState = telegramFacade.getBotState();
         Message message = update.getMessage();
         if (botAnswer != null){
             botAnswer.enableMarkdown(true);
-            botAnswer.setReplyToMessageId(message.getMessageId());
+            if (botState == BotState.SHOW_HELP || botState == BotState.UNKNOWN_COMMAND || botState == BotState.SHOW_MENU){
+                botAnswer.setReplyToMessageId(message.getMessageId());
+            }
             execute(botAnswer);
         }
 

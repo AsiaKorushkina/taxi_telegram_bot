@@ -1,6 +1,7 @@
 package com.example.taxi_bot.bot;
 
 import com.example.taxi_bot.services.MainMenuServices;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -12,7 +13,10 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import java.util.List;
 
 @Component
+
 public class TelegramFacade {
+    @Getter
+    BotState botState;
 
     @Autowired
     private BotStateContext botStateContext;
@@ -43,23 +47,22 @@ public class TelegramFacade {
 
 
     private SendMessage handleInputMessage(Message message) {
-        BotState botState = null;
+        botState = userData.getUsersCurrentBotState(message.getFrom().getId());
 
-        if (message!=null){
-            for (MessageHandler messageHandler : messageHandlerList) {
-                if (message.getText().equals(messageHandler.getMessageType().getCommand())) {
-                    botState = messageHandler.getBotState();
-                    break;
-                }
-            }
-            if (message.getText().startsWith("/")){
-                botState = botState == null? BotState.UNKNOWN_COMMAND: botState;
-            }
-            if (botState != null){
-                userData.setUsersBotStates(message.getFrom().getId(), botState);
 
-                return botStateContext.processInputMessage(botState, message);
+        for (MessageHandler messageHandler : messageHandlerList) {
+            if (message.getText().equals(messageHandler.getBotState().getCommand())) {
+                botState = messageHandler.getBotState();
+                break;
             }
+        }
+        if (message.getText().startsWith("/")){
+            botState = botState == null? BotState.UNKNOWN_COMMAND: botState;
+        }
+        if (botState != null){
+            userData.setUsersBotStates(message.getFrom().getId(), botState);
+
+            return botStateContext.processInputMessage(botState, message);
         }
 
         return null;
