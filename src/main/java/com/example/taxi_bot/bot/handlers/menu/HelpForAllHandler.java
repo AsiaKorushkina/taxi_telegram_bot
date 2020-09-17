@@ -2,8 +2,10 @@ package com.example.taxi_bot.bot.handlers.menu;
 
 import com.example.taxi_bot.bot.BotState;
 import com.example.taxi_bot.bot.MessageHandler;
-import com.example.taxi_bot.bot.handlers.messageUtil.MessageType;
+import com.example.taxi_bot.bot.UserData;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -13,32 +15,34 @@ import java.util.List;
 //Список команд, которые поддерживаются ботом
 
 @Component
+@Getter
 public class HelpForAllHandler implements MessageHandler {
 
     @Autowired
+    private UserData userData;
+    private BotState botState = BotState.SHOW_HELP_MENU;
+    @Autowired
     private List<MessageHandler> messageHandlerList;
+
+    @Value("${reply.for_help}")
+    private String replyMessage;
+
 
     @Override
     public SendMessage handle(Message message) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Команды для общения с ботом:\n");
+        System.out.println();
+        stringBuilder.append(replyMessage);
         for (MessageHandler messageHandler: messageHandlerList){
-            if  (messageHandler.getMessageType().getDescription() != null){
-                stringBuilder.append(messageHandler.getMessageType().getCommand() + ": " + messageHandler.getMessageType().getDescription() + "\n");
-
+            String command = messageHandler.getBotState().getCommand();
+            if  (command != null && command.startsWith("/")){
+                stringBuilder.append(command + ": " + messageHandler.getBotState().getDescription() + "\n");
 
             }
         }
+        userData.setUsersBotStates(message.getFrom().getId(), null);
         return new SendMessage(message.getChatId(),stringBuilder.toString());
     }
 
-    @Override
-    public BotState getBotState() {
-        return BotState.SHOW_HELP_MENU;
-    }
 
-    @Override
-    public MessageType getMessageType() {
-        return MessageType.HELPFORALL;
-    }
 }

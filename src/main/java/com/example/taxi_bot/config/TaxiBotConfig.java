@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 @ComponentScan
 @PropertySource("classpath:application.properties")
+@PropertySource(value = "classpath:messages.yaml", encoding = "UTF-8")
 public class TaxiBotConfig {
 
     @Bean

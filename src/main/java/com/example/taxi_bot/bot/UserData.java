@@ -17,9 +17,6 @@ public class UserData {
 
     public BotState getUsersCurrentBotState(int userId) {
         BotState botState = usersBotStates.get(userId);
-        if (botState == null) {
-            botState = BotState.ASK_PICKUP;
-        }
 
         return botState;
     }
