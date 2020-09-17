@@ -1,6 +1,5 @@
 package com.example.taxi_bot.bot;
 
-import com.example.taxi_bot.bot.messageUtil.MessageDistributor;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,26 +22,30 @@ public class TaxiBot extends TelegramLongPollingBot {
     private String token;
 
     @Autowired
-    MessageDistributor messageDistributor;
+    TelegramFacade telegramFacade;
 
+
+    @SneakyThrows
     public void onUpdateReceived(Update update) {
+        SendMessage botAnswer = telegramFacade.handleUpdate(update);
         Message message = update.getMessage();
-
-        String botAnswer = messageDistributor.getAnswer(message);
-        if (message != null && message.hasText() && message.getText().startsWith("/")){
-            sendMsg(message, botAnswer);
+        if (botAnswer != null){
+            botAnswer.enableMarkdown(true);
+            botAnswer.setReplyToMessageId(message.getMessageId());
+            execute(botAnswer);
         }
 
     }
 
-    @SneakyThrows
-    public synchronized void sendMsg(Message message, String s) {
-        SendMessage sendMessage = new SendMessage(message.getChatId().toString(), s);
-        sendMessage.enableMarkdown(true);
-        sendMessage.setReplyToMessageId(message.getMessageId());
-        execute(sendMessage);
+//    @SneakyThrows
+//    public synchronized void sendMsg(Message message, String s) {
+//        SendMessage sendMessage = new SendMessage(message.getChatId().toString(), s);
+//        sendMessage.enableMarkdown(true);
+//        sendMessage.setReplyToMessageId(message.getMessageId());
+//        execute(sendMessage);
+//
+//    }
 
-    }
 
     @Override
     public String getBotUsername() {
