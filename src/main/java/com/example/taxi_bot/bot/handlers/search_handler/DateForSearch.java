@@ -28,9 +28,11 @@ public class DateForSearch implements MessageHandler {
     @Override
     public SendMessage handle(Message message) {
         Integer id = message.getFrom().getId();
-        System.out.println(message.getText());
+        TaxiSearchRequestData taxiSearchRequestData = userData.getTaxiSearchData(id);
+        taxiSearchRequestData.setData(message.getText());
         if (userData.getUsersCurrentBotState(id) == botState){
             userData.setUsersBotStates(id, BotState.END_SEARCH);
+            userData.setUsersSearchData(id, taxiSearchRequestData);
         }
         return messageServices.getSendMessage(message.getChatId(), replyMessage);
     }
