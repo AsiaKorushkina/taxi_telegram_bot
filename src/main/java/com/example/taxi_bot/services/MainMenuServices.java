@@ -1,5 +1,6 @@
 package com.example.taxi_bot.services;
 
+import com.example.taxi_bot.bot.utils.Emoji;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -30,8 +31,8 @@ public class MainMenuServices {
 
         KeyboardRow row1 = new KeyboardRow();
         KeyboardRow row2 = new KeyboardRow();
-        row1.add(new KeyboardButton("Поиск такси"));
-        row2.add(new KeyboardButton("Помощь"));
+        row1.add(new KeyboardButton("Поиск такси " + Emoji.TAXI));
+        row2.add(new KeyboardButton("Помощь " + Emoji.HELP));
         keyboard.add(row1);
         keyboard.add(row2);
         replyKeyboardMarkup.setKeyboard(keyboard);

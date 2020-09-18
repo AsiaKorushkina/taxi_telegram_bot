@@ -3,6 +3,7 @@ package com.example.taxi_bot.bot.handlers.menu;
 import com.example.taxi_bot.bot.BotState;
 import com.example.taxi_bot.bot.MessageHandler;
 import com.example.taxi_bot.bot.UserData;
+import com.example.taxi_bot.bot.utils.Emoji;
 import com.example.taxi_bot.services.MainMenuServices;
 import com.example.taxi_bot.services.MessageServices;
 import lombok.Getter;
@@ -31,7 +32,7 @@ public class MainMenuHandler implements MessageHandler {
     @Override
     public SendMessage handle(Message message) {
         userData.setUsersBotStates(message.getFrom().getId(), null);
-        return mainMenuServices.getMainMenuMessage(message.getChatId(), replyMessage);
+        return mainMenuServices.getMainMenuMessage(message.getChatId(), replyMessage + " " + Emoji.MENU);
     }
 
 
