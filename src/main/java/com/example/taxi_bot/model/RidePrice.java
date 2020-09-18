@@ -2,10 +2,7 @@ package com.example.taxi_bot.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,7 +20,7 @@ public class RidePrice {
     private String classTaxi;
     private int price;
 
-    @ManyToOne
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private Ride ride;
 
 

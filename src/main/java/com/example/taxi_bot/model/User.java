@@ -20,6 +20,6 @@ public class User {
     @Basic(optional = false)
     private String name;
 
-    @OneToMany(targetEntity = Ride.class)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Ride> rides;
 }

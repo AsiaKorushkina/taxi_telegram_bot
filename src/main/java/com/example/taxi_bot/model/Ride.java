@@ -26,9 +26,10 @@ public class Ride {
 
     private LocalTime timeInWay;
 
-    @OneToMany
+    @OneToMany(mappedBy = "ride", fetch = FetchType.EAGER)
     private List<RidePrice> ridePrices;
-    @ManyToOne
+
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private User user;
 
 
