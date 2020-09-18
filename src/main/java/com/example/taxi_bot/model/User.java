@@ -12,17 +12,14 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class User {
+
     @Id
-    @GeneratedValue
-    private int id;
+    @Column(unique = true)
+    private int telegramId;
+
     @Basic(optional = false)
     private String name;
-    private String phone;
 
-
-    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
-    @Singular("taxis")
-    private List<Taxi> taxis;
-
-
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Ride> rides;
 }

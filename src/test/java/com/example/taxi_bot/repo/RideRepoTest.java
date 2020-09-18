@@ -1,5 +1,7 @@
 package com.example.taxi_bot.repo;
 
+import com.example.taxi_bot.model.Ride;
+import com.example.taxi_bot.model.RidePrice;
 import com.example.taxi_bot.model.User;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,29 +15,25 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-class UserRepoTest {
-
+class RideRepoTest {
     @Autowired
-    private UserRepo userRepo;
+    private RideRepo rideRepo;
 
 
     @BeforeEach
     @Transactional
     @Rollback(false)
     public void setUp() {
-        userRepo.save(User.builder().name("Vasya").telegramId(1).build());
-        userRepo.save(User.builder().name("Lena").telegramId(2).build());
-        userRepo.save(User.builder().name("Vasya").telegramId(3).build());
+        rideRepo.save(Ride.builder().user(User.builder().telegramId(1).name("Vasya").build()).ridePrices(List.of(
+                RidePrice.builder().price(5).build(),
+                RidePrice.builder().price(6).build())).build());
 
     }
 
-    @Test
-    @Transactional
-    public void onlyVasyaPerson() {
-        List<User> people = userRepo.findByName("Vasya");
-        Assert.assertEquals(2,people.size());
-    }
+
 }

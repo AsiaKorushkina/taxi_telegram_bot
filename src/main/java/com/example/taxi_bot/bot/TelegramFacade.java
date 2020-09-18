@@ -49,11 +49,6 @@ public class TelegramFacade {
 
         if (update.hasMessage()){
             botAnswer = handleInputMessage(update.getMessage());
-        }else{
-            if (update.hasCallbackQuery()){
-                CallbackQuery callbackQuery = update.getCallbackQuery();
-                return processCallbackQuery(callbackQuery);
-            }
         }
         return botAnswer;
     }
@@ -81,13 +76,4 @@ public class TelegramFacade {
         return null;
     }
 
-    private SendMessage processCallbackQuery(CallbackQuery buttonQuery) {
-        final long chatId = buttonQuery.getMessage().getChatId();
-        final int userId = buttonQuery.getFrom().getId();
-        //BotApiMethod<?> callBackAnswer = mainMenuServices.getMainMenuMessage(chatId, "Воспользуйтесь главным меню");
-
-
-        return null;
-
-    }
 }
