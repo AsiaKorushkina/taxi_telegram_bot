@@ -40,10 +40,10 @@ public class YandexTaxiService implements TaxiService {
     private final RestTemplate restTemplate;
 
     @Override
-    public Map<String, Integer> getPrices(Coordinates startPoint, Coordinates endPoint) {
+    public String getRideInfo(Coordinates startPoint, Coordinates endPoint) {
         Map<String, Object> body = getBody(startPoint, endPoint);
         ResponseEntity<String> exchange = restTemplate.exchange(yandexUrl, HttpMethod.POST, new HttpEntity<>(body), String.class);
-        return null;
+        return exchange.getBody();
     }
 
     private Map<String, Object> getBody(Coordinates startPoint, Coordinates endPoint) {

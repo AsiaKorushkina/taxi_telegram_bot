@@ -17,6 +17,7 @@ import java.util.List;
 @Component
 
 public class TelegramFacade {
+
     @Getter
     BotState botState;
 
@@ -32,7 +33,6 @@ public class TelegramFacade {
     @Autowired
     private GeoPositionService service;
 
-
     @Autowired
     private UserData userData;
 
@@ -44,7 +44,7 @@ public class TelegramFacade {
 
         Coordinates coordinates = service.getCoordinates(update.getMessage().getText());
 
-        yandexTaxiService.getPrices(coordinates, coordinates);
+        yandexTaxiService.getRideInfo(coordinates, coordinates);
 
 
         if (update.hasMessage()){

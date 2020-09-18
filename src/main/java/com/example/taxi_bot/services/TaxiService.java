@@ -6,5 +6,5 @@ import org.springframework.data.util.Pair;
 import java.util.Map;
 
 public interface TaxiService {
-    Map<String,Integer> getPrices(Coordinates startPoint, Coordinates endPoint);
+    String getRideInfo(Coordinates startPoint, Coordinates endPoint);
 }
