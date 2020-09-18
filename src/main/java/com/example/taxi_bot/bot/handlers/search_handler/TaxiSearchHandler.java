@@ -3,6 +3,7 @@ package com.example.taxi_bot.bot.handlers.search_handler;
 import com.example.taxi_bot.bot.BotState;
 import com.example.taxi_bot.bot.MessageHandler;
 import com.example.taxi_bot.bot.UserData;
+import com.example.taxi_bot.services.MessageServices;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,8 @@ public class TaxiSearchHandler implements MessageHandler {
 
     private BotState botState = BotState.SEARCH_TAXI;
 
+    @Autowired
+    private MessageServices messageServices;
 
     @Override
     public SendMessage handle(Message message) {
@@ -29,7 +32,7 @@ public class TaxiSearchHandler implements MessageHandler {
         if (userData.getUsersCurrentBotState(id) == botState){
             userData.setUsersBotStates(id, BotState.ASK_PICKUP);
         }
-        return new SendMessage(message.getChatId(), replyMessage);
+        return messageServices.getSendMessage(message.getChatId(), replyMessage);
     }
 
 }
