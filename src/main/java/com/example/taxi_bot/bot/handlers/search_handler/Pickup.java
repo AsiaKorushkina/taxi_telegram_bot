@@ -25,12 +25,15 @@ public class Pickup implements MessageHandler {
     @Autowired
     private MessageServices messageServices;
 
+
     @Override
     public SendMessage handle(Message message) {
         Integer id = message.getFrom().getId();
-        System.out.println(message.getText());
+        TaxiSearchRequestData taxiSearchRequestData = userData.getTaxiSearchData(id);
+        taxiSearchRequestData.setPickup(message.getText());
         if (userData.getUsersCurrentBotState(id) == botState){
             userData.setUsersBotStates(id, BotState.ASK_DESTINATION);
+            userData.setUsersSearchData(id, taxiSearchRequestData);
         }
         return messageServices.getSendMessage(message.getChatId(), replyMessage);
     }
