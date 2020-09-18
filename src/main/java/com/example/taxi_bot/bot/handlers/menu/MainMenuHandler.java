@@ -3,7 +3,7 @@ package com.example.taxi_bot.bot.handlers.menu;
 import com.example.taxi_bot.bot.BotState;
 import com.example.taxi_bot.bot.MessageHandler;
 import com.example.taxi_bot.bot.UserData;
-import com.example.taxi_bot.services.MainMenuServices;
+import com.example.taxi_bot.services.impl.MainMenuServices;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

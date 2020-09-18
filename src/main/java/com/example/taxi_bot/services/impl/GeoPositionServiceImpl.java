@@ -1,6 +1,9 @@
-package com.example.taxi_bot.services;
+package com.example.taxi_bot.services.impl;
 
 import com.example.taxi_bot.model.Coordinates;
+import com.example.taxi_bot.services.GeoPositionService;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -16,6 +19,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 
 @Component
+@RequiredArgsConstructor
 public class GeoPositionServiceImpl implements GeoPositionService {
 
     private final RestTemplate restTemplate;
@@ -25,10 +29,6 @@ public class GeoPositionServiceImpl implements GeoPositionService {
 
     @Value("${geo.url}")
     private String geoUrl;
-
-    public GeoPositionServiceImpl(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
 
     @PostConstruct
     public void initUrl(){
