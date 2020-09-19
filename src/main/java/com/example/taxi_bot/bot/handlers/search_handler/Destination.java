@@ -18,8 +18,7 @@ import java.util.List;
 @Component
 @Getter
 public class Destination implements MessageHandler {
-
-    private BotState botState = BotState.ASK_DESTINATION;
+    private final BotState botState = BotState.ASK_DESTINATION;
 
     @Autowired
     private UserData userData;
@@ -31,6 +30,9 @@ public class Destination implements MessageHandler {
     private MessageServices messageServices;
 
     @Autowired
+    private GetMyButtonsImpl getMyButtons;
+
+    @Autowired
     private TaxiRideFacade taxiRideFacade;
 
     @Override
@@ -38,6 +40,7 @@ public class Destination implements MessageHandler {
         Integer id = message.getFrom().getId();
         TaxiSearchRequestData taxiSearchRequestData = userData.getTaxiSearchData(id);
         taxiSearchRequestData.setDestination(message.getText());
+
         if (userData.getUsersCurrentBotState(id) == botState){
             userData.setUsersBotStates(id, BotState.END_SEARCH);
             userData.setUsersSearchData(id, taxiSearchRequestData);
@@ -45,4 +48,21 @@ public class Destination implements MessageHandler {
         String rideInfo = taxiRideFacade.getRideInfo(taxiSearchRequestData, message);
         return messageServices.getSendMessage(message.getChatId(), rideInfo);
     }
+
+    @Override
+    public SendMessage callbackHandle(CallbackQuery callbackQuery) {
+        Integer id = callbackQuery.getFrom().getId();
+        TaxiSearchRequestData taxiSearchRequestData = userData.getTaxiSearchData(id);
+        taxiSearchRequestData.setDestination(callbackQuery.getData());
+
+
+        if (userData.getUsersCurrentBotState(id) == botState){
+            userData.setUsersBotStates(id, BotState.ASK_DATE);
+            userData.setUsersSearchData(id, taxiSearchRequestData);
+        }
+
+
+        return messageServices.getSendMessage(callbackQuery.getMessage().getChatId(), replyMessage);
+    }
+
 }

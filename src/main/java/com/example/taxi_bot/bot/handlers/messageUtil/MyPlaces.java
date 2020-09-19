@@ -11,24 +11,26 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+
 @Component
 @Getter
-public class UnknownCommandMessageHandler implements MessageHandler {
+public class MyPlaces implements MessageHandler {
+    private final BotState botState = BotState.MY_PLACES;
 
     @Autowired
     private UserData userData;
 
-    private final BotState botState = BotState.UNKNOWN_COMMAND;
-
-    @Value("${reply.alarm}")
+    @Value("${reply.for_places}")
     private String replyMessage;
+
 
     @Autowired
     private MessageServices messageServices;
 
     @Override
     public SendMessage handle(Message message) {
-        userData.setUsersBotStates(message.getFrom().getId(), null);
+        userData.setUsersBotStates(message.getFrom().getId(), BotState.ASK_MYPLACES);
         return messageServices.getSendMessage(message.getChatId(), replyMessage);
     }
+
 }

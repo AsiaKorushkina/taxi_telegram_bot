@@ -10,7 +10,8 @@ public enum Emoji {
     PRICE(EmojiParser.parseToUnicode(":dollar:")),
     MENU(EmojiParser.parseToUnicode(":point_down:")),
     HELP(EmojiParser.parseToUnicode(":information_source:")),
-    TAXI(EmojiParser.parseToUnicode(":taxi:"));
+    TAXI(EmojiParser.parseToUnicode(":taxi:")),
+    CASTLE(EmojiParser.parseToUnicode(":european_castle:"));
 
 
     private final String name;

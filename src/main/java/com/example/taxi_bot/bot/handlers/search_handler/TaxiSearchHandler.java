@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+
 @Component
 @Getter
 public class TaxiSearchHandler implements MessageHandler {
@@ -21,7 +22,10 @@ public class TaxiSearchHandler implements MessageHandler {
     @Value("${reply.for_pickup}")
     String replyMessage;
 
-    private BotState botState = BotState.SEARCH_TAXI;
+    @Autowired
+    private GetMyButtonsImpl getMyButtons;
+
+    private final BotState botState = BotState.SEARCH_TAXI;
 
     @Autowired
     private MessageServices messageServices;
@@ -32,7 +36,14 @@ public class TaxiSearchHandler implements MessageHandler {
         if (userData.getUsersCurrentBotState(id) == botState){
             userData.setUsersBotStates(id, BotState.ASK_PICKUP);
         }
-        return messageServices.getSendMessage(message.getChatId(), replyMessage);
+
+        TaxiSearchRequestData taxiSearchRequestData = userData.getTaxiSearchData(id);
+        SendMessage reply = messageServices.getSendMessage(message.getChatId(), replyMessage);
+        if (taxiSearchRequestData.getLenFavoritePlaces() > 0) {
+            reply.setReplyMarkup(getMyButtons.getMyPlaceButtonsMarkup(taxiSearchRequestData.getFavoritePlaces()));
+        }
+        return reply;
     }
+
 
 }
