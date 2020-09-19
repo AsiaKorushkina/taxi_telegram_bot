@@ -16,7 +16,7 @@ public class RidePrice {
     @GeneratedValue
     private int id;
 
-    private String aggregator;
+    private Aggregator aggregator;
     private String classTaxi;
     private int price;
 

@@ -1,8 +1,9 @@
-package com.example.taxi_bot.bot.handlers.search_handler;
+package com.example.taxi_bot.bot.handlers.messageUtil;
 
 import com.example.taxi_bot.bot.BotState;
 import com.example.taxi_bot.bot.MessageHandler;
 import com.example.taxi_bot.bot.UserData;
+import com.example.taxi_bot.bot.handlers.search_handler.TaxiSearchRequestData;
 import com.example.taxi_bot.services.MessageServices;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +12,18 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import java.util.List;
+import java.util.Map;
+
 @Component
 @Getter
-public class DateForSearch implements MessageHandler {
-    private BotState botState = BotState.ASK_DATE;
+public class InputMyPlacesHandler implements MessageHandler {
+    private BotState botState = BotState.ASK_MYPLACES;
 
     @Autowired
     private UserData userData;
 
-    @Value("${reply.for_end}")
+    @Value("${reply.for_inputhome}")
     private String replyMessage;
 
     @Autowired
@@ -29,10 +33,11 @@ public class DateForSearch implements MessageHandler {
     public SendMessage handle(Message message) {
         Integer id = message.getFrom().getId();
         TaxiSearchRequestData taxiSearchRequestData = userData.getTaxiSearchData(id);
-        taxiSearchRequestData.setData(message.getText());
+
         if (userData.getUsersCurrentBotState(id) == botState){
-            userData.setUsersBotStates(id, null); //todo END_SEARCH
+            taxiSearchRequestData.setNewValueFavoritePlaces(message.getText());
             userData.setUsersSearchData(id, taxiSearchRequestData);
+            userData.setUsersBotStates(id, null);
         }
         return messageServices.getSendMessage(message.getChatId(), replyMessage);
     }

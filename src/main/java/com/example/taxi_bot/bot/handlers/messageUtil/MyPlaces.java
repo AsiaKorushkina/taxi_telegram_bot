@@ -1,4 +1,4 @@
-package com.example.taxi_bot.bot.handlers.search_handler;
+package com.example.taxi_bot.bot.handlers.messageUtil;
 
 import com.example.taxi_bot.bot.BotState;
 import com.example.taxi_bot.bot.MessageHandler;
@@ -11,29 +11,27 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import javax.persistence.Column;
+
 @Component
 @Getter
-public class DateForSearch implements MessageHandler {
-    private BotState botState = BotState.ASK_DATE;
+public class MyPlaces implements MessageHandler {
+    private BotState botState = BotState.MY_PLACES;
 
     @Autowired
     private UserData userData;
 
-    @Value("${reply.for_end}")
+    @Value("${reply.for_places}")
     private String replyMessage;
+
 
     @Autowired
     private MessageServices messageServices;
 
     @Override
     public SendMessage handle(Message message) {
-        Integer id = message.getFrom().getId();
-        TaxiSearchRequestData taxiSearchRequestData = userData.getTaxiSearchData(id);
-        taxiSearchRequestData.setData(message.getText());
-        if (userData.getUsersCurrentBotState(id) == botState){
-            userData.setUsersBotStates(id, null); //todo END_SEARCH
-            userData.setUsersSearchData(id, taxiSearchRequestData);
-        }
+        userData.setUsersBotStates(message.getFrom().getId(), BotState.ASK_MYPLACES);
         return messageServices.getSendMessage(message.getChatId(), replyMessage);
     }
+
 }
