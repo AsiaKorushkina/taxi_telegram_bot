@@ -32,5 +32,4 @@ public class Ride {
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private User user;
 
-
 }

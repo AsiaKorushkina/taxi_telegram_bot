@@ -10,5 +10,4 @@ import org.springframework.stereotype.Component;
 public class TaxiSearchRequestData {
     private String pickup;
     private String destination;
-    private String data;
 }

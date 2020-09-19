@@ -1,6 +1,7 @@
 package com.example.taxi_bot.services.impl;
 
 import com.example.taxi_bot.model.Coordinates;
+import com.example.taxi_bot.model.RidePrice;
 import com.example.taxi_bot.services.TaxiService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -40,10 +41,10 @@ public class YandexTaxiService implements TaxiService {
     }
 
     @Override
-    public String getRideInfo(Coordinates startPoint, Coordinates endPoint) {
+    public List<RidePrice> getRideInfo(Coordinates startPoint, Coordinates endPoint) {
         Map<String, Object> body = getBody(startPoint, endPoint);
         ResponseEntity<String> exchange = restTemplate.exchange(yandexUrl, HttpMethod.POST, new HttpEntity<>(body), String.class);
-        return exchange.getBody();
+        return null;
     }
 
     private Map<String, Object> getBody(Coordinates startPoint, Coordinates endPoint) {

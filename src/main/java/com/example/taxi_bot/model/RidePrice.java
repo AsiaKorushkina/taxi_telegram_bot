@@ -23,6 +23,4 @@ public class RidePrice {
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private Ride ride;
 
-
-
 }

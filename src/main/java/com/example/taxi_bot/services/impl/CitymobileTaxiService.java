@@ -1,6 +1,7 @@
 package com.example.taxi_bot.services.impl;
 
 import com.example.taxi_bot.model.Coordinates;
+import com.example.taxi_bot.model.RidePrice;
 import com.example.taxi_bot.services.TaxiService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -42,10 +44,10 @@ public class CitymobileTaxiService implements TaxiService {
     }
 
     @Override
-    public String getRideInfo(Coordinates startPoint, Coordinates endPoint) {
+    public List<RidePrice> getRideInfo(Coordinates startPoint, Coordinates endPoint) {
         Map<String, Object> body = getBody(startPoint, endPoint);
         ResponseEntity<String> exchange = restTemplate.exchange(citymobileUrl, HttpMethod.POST, new HttpEntity<>(body), String.class);
-        return exchange.getBody();
+        return null;
     }
 
     private Map<String, Object> getBody(Coordinates startPoint, Coordinates endPoint) {

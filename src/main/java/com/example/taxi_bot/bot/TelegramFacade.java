@@ -1,6 +1,7 @@
 package com.example.taxi_bot.bot;
 
 import com.example.taxi_bot.model.Coordinates;
+import com.example.taxi_bot.model.RidePrice;
 import com.example.taxi_bot.services.GeoPositionService;
 import com.example.taxi_bot.services.TaxiService;
 import com.example.taxi_bot.services.impl.MainMenuServices;
@@ -45,9 +46,9 @@ public class TelegramFacade {
 
         Coordinates coordinates = service.getCoordinates(update.getMessage().getText());
 
-        String yandex = yandexTaxiService.getRideInfo(coordinates, coordinates);
+        List<RidePrice> yandex = yandexTaxiService.getRideInfo(coordinates, coordinates);
 
-        String citymobile = citymobileTaxiService.getRideInfo(coordinates, coordinates);
+        List<RidePrice> citymobile = citymobileTaxiService.getRideInfo(coordinates, coordinates);
 
         if (update.hasMessage()){
             botAnswer = handleInputMessage(update.getMessage());
@@ -65,10 +66,10 @@ public class TelegramFacade {
                 break;
             }
         }
-        if (message.getText().startsWith("/")){
+        if (message.getText().startsWith("/")) {
             botState = botState == null? BotState.UNKNOWN_COMMAND: botState;
         }
-        if (botState != null){
+        if (botState != null) {
             userData.setUsersBotStates(message.getFrom().getId(), botState);
 
             return botStateContext.processInputMessage(botState, message);
