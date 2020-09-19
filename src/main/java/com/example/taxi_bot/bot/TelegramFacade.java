@@ -1,6 +1,7 @@
 package com.example.taxi_bot.bot;
 
 import com.example.taxi_bot.model.Coordinates;
+import com.example.taxi_bot.model.RidePrice;
 import com.example.taxi_bot.services.GeoPositionService;
 import com.example.taxi_bot.services.TaxiService;
 import com.example.taxi_bot.services.impl.MainMenuServices;

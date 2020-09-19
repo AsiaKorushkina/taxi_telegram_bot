@@ -22,6 +22,7 @@ import java.util.Map;
 public class YandexTaxiService implements TaxiService {
 
     private static final String ROUTE = "route";
+    private static final String YANDEX_TAXI = "Yandex Taxi";
 
     private Map<String, Object> body = new HashMap<>();
 
@@ -40,10 +41,10 @@ public class YandexTaxiService implements TaxiService {
     }
 
     @Override
-    public String getRideInfo(Coordinates startPoint, Coordinates endPoint) {
+    public List<RidePrice> getRideInfo(Coordinates startPoint, Coordinates endPoint) {
         Map<String, Object> body = getBody(startPoint, endPoint);
         ResponseEntity<String> exchange = restTemplate.exchange(yandexUrl, HttpMethod.POST, new HttpEntity<>(body), String.class);
-        return exchange.getBody();
+        return extractPrises(exchange.getBody());
     }
 
     private Map<String, Object> getBody(Coordinates startPoint, Coordinates endPoint) {
