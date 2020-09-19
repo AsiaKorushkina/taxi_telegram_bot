@@ -15,7 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 @Component
 @Getter
 public class Destination implements MessageHandler {
-    private BotState botState = BotState.ASK_DESTINATION;
+    private final BotState botState = BotState.ASK_DESTINATION;
 
     @Autowired
     private UserData userData;
@@ -34,13 +34,7 @@ public class Destination implements MessageHandler {
         Integer id = message.getFrom().getId();
         TaxiSearchRequestData taxiSearchRequestData = userData.getTaxiSearchData(id);
         taxiSearchRequestData.setDestination(message.getText());
-        //String text = message.getText();
-//        if (text.equals("/myhome")){
-//            taxiSearchRequestData.setDestination(taxiSearchRequestData.getMyHome());
-//        }
-//        else{
-//            taxiSearchRequestData.setDestination(text);
-//        }
+
         if (userData.getUsersCurrentBotState(id) == botState){
             userData.setUsersBotStates(id, BotState.ASK_DATE);
             userData.setUsersSearchData(id, taxiSearchRequestData);
@@ -61,13 +55,7 @@ public class Destination implements MessageHandler {
         }
 
 
-
-        SendMessage reply = messageServices.getSendMessage(callbackQuery.getMessage().getChatId(), replyMessage);
-//        if (taxiSearchRequestData.getLenFavoritePlaces() > 0){
-//            reply.setReplyMarkup(getMyButtons.getMyPlaceButtonsMarkup(taxiSearchRequestData.getFavoritePlaces()));
-//        }
-        //
-        return reply;
+        return messageServices.getSendMessage(callbackQuery.getMessage().getChatId(), replyMessage);
     }
 
 }

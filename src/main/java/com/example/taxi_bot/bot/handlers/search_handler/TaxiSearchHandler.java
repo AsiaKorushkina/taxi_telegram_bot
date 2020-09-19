@@ -10,11 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 @Getter
@@ -29,7 +25,7 @@ public class TaxiSearchHandler implements MessageHandler {
     @Autowired
     private GetMyButtonsImpl getMyButtons;
 
-    private BotState botState = BotState.SEARCH_TAXI;
+    private final BotState botState = BotState.SEARCH_TAXI;
 
     @Autowired
     private MessageServices messageServices;
@@ -43,7 +39,7 @@ public class TaxiSearchHandler implements MessageHandler {
 
         TaxiSearchRequestData taxiSearchRequestData = userData.getTaxiSearchData(id);
         SendMessage reply = messageServices.getSendMessage(message.getChatId(), replyMessage);
-        if (taxiSearchRequestData.getLenFavoritePlaces() > 0){
+        if (taxiSearchRequestData.getLenFavoritePlaces() > 0) {
             reply.setReplyMarkup(getMyButtons.getMyPlaceButtonsMarkup(taxiSearchRequestData.getFavoritePlaces()));
         }
         return reply;

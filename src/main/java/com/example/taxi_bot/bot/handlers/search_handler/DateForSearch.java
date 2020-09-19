@@ -14,7 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 @Component
 @Getter
 public class DateForSearch implements MessageHandler {
-    private BotState botState = BotState.ASK_DATE;
+    private final BotState botState = BotState.ASK_DATE;
 
     @Autowired
     private UserData userData;
@@ -31,7 +31,7 @@ public class DateForSearch implements MessageHandler {
         TaxiSearchRequestData taxiSearchRequestData = userData.getTaxiSearchData(id);
         taxiSearchRequestData.setData(message.getText());
         if (userData.getUsersCurrentBotState(id) == botState){
-            userData.setUsersBotStates(id, null); //todo END_SEARCH
+            userData.setUsersBotStates(id, null);
             userData.setUsersSearchData(id, taxiSearchRequestData);
         }
         return messageServices.getSendMessage(message.getChatId(), replyMessage);

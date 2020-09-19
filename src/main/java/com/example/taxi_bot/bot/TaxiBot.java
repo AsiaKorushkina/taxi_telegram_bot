@@ -40,16 +40,6 @@ public class TaxiBot extends TelegramLongPollingBot {
 
     }
 
-//    @SneakyThrows
-//    public synchronized void sendMsg(Message message, String s) {
-//        SendMessage sendMessage = new SendMessage(message.getChatId().toString(), s);
-//        sendMessage.enableMarkdown(true);
-//        sendMessage.setReplyToMessageId(message.getMessageId());
-//        execute(sendMessage);
-//
-//    }
-
-
     @Override
     public String getBotUsername() {
         return username;

@@ -11,16 +11,12 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 @Getter
 public class Pickup implements MessageHandler {
-    private BotState botState = BotState.ASK_PICKUP;
+    private final BotState botState = BotState.ASK_PICKUP;
 
     @Autowired
     private UserData userData;
@@ -50,7 +46,6 @@ public class Pickup implements MessageHandler {
         if (taxiSearchRequestData.getLenFavoritePlaces() > 0){
             reply.setReplyMarkup(getMyButtons.getMyPlaceButtonsMarkup(taxiSearchRequestData.getFavoritePlaces()));
         }
-        //
         return reply;
     }
 

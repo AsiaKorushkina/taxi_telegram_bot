@@ -18,7 +18,7 @@ public class UnknownCommandMessageHandler implements MessageHandler {
     @Autowired
     private UserData userData;
 
-    private BotState botState = BotState.UNKNOWN_COMMAND;
+    private final BotState botState = BotState.UNKNOWN_COMMAND;
 
     @Value("${reply.alarm}")
     private String replyMessage;

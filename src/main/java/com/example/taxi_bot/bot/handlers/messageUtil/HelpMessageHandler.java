@@ -14,7 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 @Component
 @Getter
 public class HelpMessageHandler implements MessageHandler {
-    private BotState botState = BotState.SHOW_HELP;
+    private final BotState botState = BotState.SHOW_HELP;
 
     @Autowired
     private UserData userData;

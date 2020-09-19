@@ -18,7 +18,7 @@ import java.util.Map;
 @Component
 @Getter
 public class InputMyPlacesHandler implements MessageHandler {
-    private BotState botState = BotState.ASK_MYPLACES;
+    private final BotState botState = BotState.ASK_MYPLACES;
 
     @Autowired
     private UserData userData;

@@ -31,23 +31,5 @@ public class GetMyButtonsImpl implements GetMyButtons {
 
         return inlineKeyboardMarkup;
 
-//        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-//        InlineKeyboardButton buttonGenderMan = new InlineKeyboardButton().setText("М");
-//        InlineKeyboardButton buttonGenderWoman = new InlineKeyboardButton().setText("Ж");
-//
-//        //Every button must have callBackData, or else not work !
-//        buttonGenderMan.setCallbackData("buttonMan");
-//        buttonGenderWoman.setCallbackData("buttonWoman");
-//
-//        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
-//        keyboardButtonsRow1.add(buttonGenderMan);
-//        keyboardButtonsRow1.add(buttonGenderWoman);
-//
-//        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-//        rowList.add(keyboardButtonsRow1);
-//
-//        inlineKeyboardMarkup.setKeyboard(rowList);
-//
-//        return inlineKeyboardMarkup;
     }
 }

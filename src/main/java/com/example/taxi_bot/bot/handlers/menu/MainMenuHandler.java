@@ -20,7 +20,7 @@ public class MainMenuHandler implements MessageHandler {
     @Autowired
     private UserData userData;
 
-    private BotState botState = BotState.SHOW_MENU;
+    private final BotState botState = BotState.SHOW_MENU;
 
     @Value("${reply.welcome}")
     private String replyMessage;

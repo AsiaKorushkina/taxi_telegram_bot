@@ -11,12 +11,11 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import javax.persistence.Column;
 
 @Component
 @Getter
 public class MyPlaces implements MessageHandler {
-    private BotState botState = BotState.MY_PLACES;
+    private final BotState botState = BotState.MY_PLACES;
 
     @Autowired
     private UserData userData;
