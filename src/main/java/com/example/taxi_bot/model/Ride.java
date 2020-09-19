@@ -22,14 +22,21 @@ public class Ride {
     private String endPoint;
 
     private LocalDate dateDepart;
-    private LocalTime timeDepart;
-
-    private LocalTime timeInWay;
 
     @OneToMany(mappedBy = "ride", fetch = FetchType.EAGER)
     private List<RidePrice> ridePrices;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private User user;
+
+    @Override
+    public String toString(){
+        StringBuilder res = new StringBuilder();
+        for (RidePrice ridePrice : ridePrices) {
+            res = res.append(ridePrice.getAggregator() + " " + ridePrice.getClassTaxi() + " " + ridePrice.getPrice() + "\n");
+        }
+        return String.valueOf(res);
+
+    }
 
 }

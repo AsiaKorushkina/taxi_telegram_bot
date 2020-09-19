@@ -42,7 +42,7 @@ public class Destination implements MessageHandler {
             userData.setUsersBotStates(id, BotState.END_SEARCH);
             userData.setUsersSearchData(id, taxiSearchRequestData);
         }
-        List<RidePrice> ridePrices = taxiRideFacade.aggregateRidePrice(taxiSearchRequestData);
-        return messageServices.getSendMessage(message.getChatId(), ridePrices.toString());
+        String rideInfo = taxiRideFacade.getRideInfo(taxiSearchRequestData, message);
+        return messageServices.getSendMessage(message.getChatId(), rideInfo);
     }
 }

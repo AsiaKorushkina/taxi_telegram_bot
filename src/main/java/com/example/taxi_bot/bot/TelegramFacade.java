@@ -44,11 +44,11 @@ public class TelegramFacade {
     public SendMessage handleUpdate(Update update) {
         SendMessage botAnswer = null;
 
-        Coordinates coordinates = service.getCoordinates(update.getMessage().getText());
+/*        Coordinates coordinates = service.getCoordinates(update.getMessage().getText());
 
         List<RidePrice> yandex = yandexTaxiService.getRideInfo(coordinates, coordinates);
 
-        List<RidePrice> citymobile = citymobileTaxiService.getRideInfo(coordinates, coordinates);
+        List<RidePrice> citymobile = citymobileTaxiService.getRideInfo(coordinates, coordinates);*/
 
         if (update.hasMessage()){
             botAnswer = handleInputMessage(update.getMessage());

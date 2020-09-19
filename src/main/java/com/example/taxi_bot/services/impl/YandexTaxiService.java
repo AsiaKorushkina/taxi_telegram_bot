@@ -6,6 +6,8 @@ import com.example.taxi_bot.services.TaxiService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +26,7 @@ import java.util.Map;
 public class YandexTaxiService implements TaxiService {
 
     private static final String ROUTE = "route";
+    private static final String YANDEX_TAXI = "Yandex Taxi";
 
     private Map<String, Object> body = new HashMap<>();
 
@@ -44,7 +48,28 @@ public class YandexTaxiService implements TaxiService {
     public List<RidePrice> getRideInfo(Coordinates startPoint, Coordinates endPoint) {
         Map<String, Object> body = getBody(startPoint, endPoint);
         ResponseEntity<String> exchange = restTemplate.exchange(yandexUrl, HttpMethod.POST, new HttpEntity<>(body), String.class);
-        return null;
+        return extractPrises(exchange.getBody());
+    }
+
+    private List<RidePrice> extractPrises(String jsonSource) {
+        List<RidePrice> ridePriceList = new ArrayList<>();
+
+        JSONObject jsonObject = new JSONObject(jsonSource);
+        JSONArray jsonArray = jsonObject.getJSONArray("service_levels");
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            int price = Integer.parseInt(jsonArray.getJSONObject(i).getString("price").replaceAll("[^0-9]", ""));
+            String classTaxiName = jsonArray.getJSONObject(i).getString("name");
+
+            ridePriceList.add(
+                    RidePrice.builder()
+                            .price(price)
+                            .classTaxi(classTaxiName)
+                            .aggregator(YANDEX_TAXI)
+                            .build()
+            );
+        }
+        return ridePriceList;
     }
 
     private Map<String, Object> getBody(Coordinates startPoint, Coordinates endPoint) {
