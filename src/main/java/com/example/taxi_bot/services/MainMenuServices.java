@@ -31,10 +31,15 @@ public class MainMenuServices {
 
         KeyboardRow row1 = new KeyboardRow();
         KeyboardRow row2 = new KeyboardRow();
+        KeyboardRow row3 = new KeyboardRow();
         row1.add(new KeyboardButton("Поиск такси " + Emoji.TAXI));
         row2.add(new KeyboardButton("Помощь " + Emoji.HELP));
+        row3.add(new KeyboardButton("Избранные места " + Emoji.CASTLE));
+
         keyboard.add(row1);
         keyboard.add(row2);
+        keyboard.add(row3);
+
         replyKeyboardMarkup.setKeyboard(keyboard);
         return replyKeyboardMarkup;
     }

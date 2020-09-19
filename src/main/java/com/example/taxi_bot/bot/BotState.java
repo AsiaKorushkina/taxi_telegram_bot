@@ -14,7 +14,8 @@ public enum BotState {
     SHOW_HELP("/help", "Мотивационная команда."),
     SHOW_HELP_MENU("Помощь " + Emoji.HELP),
     SHOW_MENU("/start", "Начало работы с ботом."),
-    MY_PLACES("/myplaces", "Где я часто бываю?"),
+    MY_PLACES("/myplaces", "Добавить в список избранных мест"),
+    SHOW_MY_PLACES("Избранные места " + Emoji.CASTLE),
 
     UNKNOWN_COMMAND;
 
