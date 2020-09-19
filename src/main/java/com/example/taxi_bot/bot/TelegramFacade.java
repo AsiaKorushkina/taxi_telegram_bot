@@ -2,24 +2,22 @@ package com.example.taxi_bot.bot;
 
 import com.example.taxi_bot.model.Coordinates;
 import com.example.taxi_bot.services.GeoPositionService;
-import com.example.taxi_bot.services.impl.MainMenuServices;
 import com.example.taxi_bot.services.TaxiService;
+import com.example.taxi_bot.services.impl.MainMenuServices;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
 
 @Component
-
 public class TelegramFacade {
 
     @Getter
-    BotState botState;
+    private BotState botState;
 
     @Autowired
     private BotStateContext botStateContext;
@@ -39,13 +37,17 @@ public class TelegramFacade {
     @Autowired
     private TaxiService yandexTaxiService;
 
+    @Autowired
+    private TaxiService citymobileTaxiService;
+
     public SendMessage handleUpdate(Update update) {
         SendMessage botAnswer = null;
 
         Coordinates coordinates = service.getCoordinates(update.getMessage().getText());
 
-        yandexTaxiService.getRideInfo(coordinates, coordinates);
+        String yandex = yandexTaxiService.getRideInfo(coordinates, coordinates);
 
+        String citymobile = citymobileTaxiService.getRideInfo(coordinates, coordinates);
 
         if (update.hasMessage()){
             botAnswer = handleInputMessage(update.getMessage());
@@ -56,7 +58,6 @@ public class TelegramFacade {
 
     private SendMessage handleInputMessage(Message message) {
         botState = userData.getUsersCurrentBotState(message.getFrom().getId());
-
 
         for (MessageHandler messageHandler : messageHandlerList) {
             if (message.getText().equals(messageHandler.getBotState().getCommand())) {

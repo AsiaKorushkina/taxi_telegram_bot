@@ -21,6 +21,7 @@ public class HelpForAllHandler implements MessageHandler {
 
     @Autowired
     private UserData userData;
+
     private BotState botState = BotState.SHOW_HELP_MENU;
     @Autowired
     private List<MessageHandler> messageHandlerList;

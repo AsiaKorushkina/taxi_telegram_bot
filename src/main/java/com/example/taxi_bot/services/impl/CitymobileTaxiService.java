@@ -14,46 +14,46 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class YandexTaxiService implements TaxiService {
+public class CitymobileTaxiService implements TaxiService {
 
-    private static final String ROUTE = "route";
+    private static final String LATITUDE = "latitude";
+    private static final String LONGITUDE = "longitude";
+    private static final String DEL_LATITUDE = "del_latitude";
+    private static final String DEL_LONGITUDE = "del_longitude";
 
     private Map<String, Object> body = new HashMap<>();
 
-    @Value("${yandex.body}")
-    private String yandexBody;
+    @Value("${citymobile.body}")
+    private String citymobileBody;
 
-    @Value("${yandex.url}")
-    private String yandexUrl;
+    @Value("${citymobile.url}")
+    private String citymobileUrl;
 
     private final RestTemplate restTemplate;
 
     @SneakyThrows
     @PostConstruct
     public void initBody() {
-        body = new ObjectMapper().readValue(yandexBody, HashMap.class);
+        body = new ObjectMapper().readValue(citymobileBody, HashMap.class);
     }
 
     @Override
     public String getRideInfo(Coordinates startPoint, Coordinates endPoint) {
         Map<String, Object> body = getBody(startPoint, endPoint);
-        ResponseEntity<String> exchange = restTemplate.exchange(yandexUrl, HttpMethod.POST, new HttpEntity<>(body), String.class);
+        ResponseEntity<String> exchange = restTemplate.exchange(citymobileUrl, HttpMethod.POST, new HttpEntity<>(body), String.class);
         return exchange.getBody();
     }
 
     private Map<String, Object> getBody(Coordinates startPoint, Coordinates endPoint) {
-        Map<String, Object> res = new HashMap<>(body);
-        res.put(ROUTE, List.of(
-                List.of(Double.parseDouble(startPoint.getLatitude()), Double.parseDouble(startPoint.getLongitude())),
-                List.of(Double.parseDouble(endPoint.getLatitude()), Double.parseDouble(endPoint.getLongitude()))
-                )
-        );
+        Map<String, Object> res = new HashMap(body);
+        res.put(LATITUDE, startPoint.getLatitude());
+        res.put(LONGITUDE, startPoint.getLongitude());
+        res.put(DEL_LATITUDE, endPoint.getLatitude());
+        res.put(DEL_LONGITUDE, endPoint.getLatitude());
         return res;
     }
-
 }
