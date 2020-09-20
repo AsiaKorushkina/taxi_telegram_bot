@@ -56,10 +56,10 @@ public class CitymobilTaxiService implements TaxiService {
 
     private Map<String, Object> getBody(Coordinates startPoint, Coordinates endPoint) {
         Map<String, Object> res = new HashMap(body);
-        res.put(LATITUDE, startPoint.getLatitude());
-        res.put(LONGITUDE, startPoint.getLongitude());
-        res.put(DEL_LATITUDE, endPoint.getLatitude());
-        res.put(DEL_LONGITUDE, endPoint.getLongitude());
+        res.put(LATITUDE, startPoint.getLongitude());
+        res.put(LONGITUDE, startPoint.getLatitude());
+        res.put(DEL_LATITUDE, endPoint.getLongitude());
+        res.put(DEL_LONGITUDE, endPoint.getLatitude());
         return res;
     }
 
