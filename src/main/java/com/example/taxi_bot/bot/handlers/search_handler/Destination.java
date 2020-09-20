@@ -40,7 +40,7 @@ public class Destination implements MessageHandler {
         taxiSearchRequestData.setDestination(message.getText());
 
         if (userData.getUsersCurrentBotState(id) == botState){
-            userData.setUsersBotStates(id, BotState.END_SEARCH);
+            userData.setUsersBotStates(id, BotState.DEFAULT);
             userData.setUsersSearchData(id, taxiSearchRequestData);
         }
         String rideInfo = taxiRideFacade.getRideInfo(taxiSearchRequestData, message);
@@ -55,7 +55,7 @@ public class Destination implements MessageHandler {
 
 
         if (userData.getUsersCurrentBotState(id) == botState){
-            userData.setUsersBotStates(id, BotState.END_SEARCH);
+            userData.setUsersBotStates(id, BotState.DEFAULT);
             userData.setUsersSearchData(id, taxiSearchRequestData);
         }
 

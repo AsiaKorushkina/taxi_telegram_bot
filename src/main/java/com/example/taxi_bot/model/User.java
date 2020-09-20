@@ -14,7 +14,9 @@ import java.util.List;
 public class User {
 
     @Id
-    @Column(unique = true)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private int id;
+
     private int telegramId;
 
     @Basic(optional = false)

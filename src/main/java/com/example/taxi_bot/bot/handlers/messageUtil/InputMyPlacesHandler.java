@@ -34,7 +34,7 @@ public class InputMyPlacesHandler implements MessageHandler {
         if (userData.getUsersCurrentBotState(id) == botState){
             taxiSearchRequestData.setNewValueFavoritePlaces(message.getText());
             userData.setUsersSearchData(id, taxiSearchRequestData);
-            userData.setUsersBotStates(id, null);
+            userData.setUsersBotStates(id, BotState.DEFAULT);
         }
         return messageServices.getSendMessage(message.getChatId(), replyMessage);
     }

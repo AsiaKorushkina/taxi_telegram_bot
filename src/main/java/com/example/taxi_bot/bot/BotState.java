@@ -11,6 +11,7 @@ public enum BotState {
     ASK_DESTINATION,
     ASK_DATE,
     END_SEARCH,
+    DEFAULT,
     SHOW_HELP("/help", "Мотивационная команда."),
     SHOW_HELP_MENU("Помощь " + Emoji.HELP),
     SHOW_MENU("/start", "Начало работы с ботом."),

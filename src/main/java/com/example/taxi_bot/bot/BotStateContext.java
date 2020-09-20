@@ -1,5 +1,6 @@
 package com.example.taxi_bot.bot;
 
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -10,6 +11,7 @@ import java.util.List;
 
 
 @Component
+@Getter
 public class BotStateContext {
 
     @Autowired

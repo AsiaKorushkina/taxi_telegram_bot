@@ -10,6 +10,7 @@ import java.util.Map;
 @Component
 @Getter
 public class UserData {
+
     private Map<Integer, BotState> usersBotStates = new HashMap<>();
     private Map<Integer, TaxiSearchRequestData> usersSearchData = new HashMap<>();
 
@@ -22,7 +23,7 @@ public class UserData {
     }
 
     public BotState getUsersCurrentBotState(int userId) {
-        BotState botState = usersBotStates.get(userId);
+        BotState botState = usersBotStates.getOrDefault(userId, BotState.DEFAULT);
 
         return botState;
     }

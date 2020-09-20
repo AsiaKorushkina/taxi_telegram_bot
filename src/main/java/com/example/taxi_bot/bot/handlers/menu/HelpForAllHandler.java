@@ -46,7 +46,7 @@ public class HelpForAllHandler implements MessageHandler {
 
             }
         }
-        userData.setUsersBotStates(message.getFrom().getId(), null);
+        userData.setUsersBotStates(message.getFrom().getId(), BotState.DEFAULT);
         return messageServices.getSendMessage(message.getChatId(),stringBuilder.toString());
     }
 

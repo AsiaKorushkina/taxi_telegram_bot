@@ -47,7 +47,7 @@ public class PlacesHandler implements MessageHandler {
                 stringBuilder.append(places + "\n");
             }
         }
-        userData.setUsersBotStates(id, null);
+        userData.setUsersBotStates(id, BotState.DEFAULT);
         return messageServices.getSendMessage(message.getChatId(),stringBuilder.toString());
     }
 

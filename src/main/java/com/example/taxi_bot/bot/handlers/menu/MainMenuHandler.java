@@ -30,7 +30,7 @@ public class MainMenuHandler implements MessageHandler {
 
     @Override
     public SendMessage handle(Message message) {
-        userData.setUsersBotStates(message.getFrom().getId(), null);
+        userData.setUsersBotStates(message.getFrom().getId(), BotState.DEFAULT);
         return mainMenuServices.getMainMenuMessage(message.getChatId(), replyMessage + " " + Emoji.MENU);
     }
 

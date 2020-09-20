@@ -53,7 +53,7 @@ public class TelegramFacade {
     private SendMessage handleInputMessage(Message message) {
         botState = userData.getUsersCurrentBotState(message.getFrom().getId());
 
-        if (botState != null){
+        if (botState != BotState.DEFAULT){
             userData.setUsersBotStates(message.getFrom().getId(), botState);
 
             return botStateContext.processInputMessage(botState, message);
@@ -67,7 +67,7 @@ public class TelegramFacade {
             }
         }
         if (message.getText().startsWith("/")){
-            botState = botState == null? BotState.UNKNOWN_COMMAND: botState;
+            botState = botState == BotState.DEFAULT? BotState.UNKNOWN_COMMAND: botState;
         }
 
         userData.setUsersBotStates(message.getFrom().getId(), botState);
