@@ -29,7 +29,7 @@ class RideRepoTest {
     @Transactional
     @Rollback(false)
     public void setUp() {
-        rideRepo.save(Ride.builder().user(User.builder().telegramId(1).name("Vasya").build()).ridePrices(List.of(
+        rideRepo.save(Ride.builder().userId(1).ridePrices(List.of(
                 RidePrice.builder().price(5).build(),
                 RidePrice.builder().price(6).build())).build());
 

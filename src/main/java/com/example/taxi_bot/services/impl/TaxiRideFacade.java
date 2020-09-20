@@ -1,11 +1,13 @@
-package com.example.taxi_bot.services;
+package com.example.taxi_bot.services.impl;
 
 import com.example.taxi_bot.bot.handlers.search_handler.TaxiSearchRequestData;
 import com.example.taxi_bot.model.Coordinates;
 import com.example.taxi_bot.model.Ride;
 import com.example.taxi_bot.model.RidePrice;
-import com.example.taxi_bot.model.User;
-import com.example.taxi_bot.repo.RideRepo;
+import com.example.taxi_bot.services.GeoPositionService;
+import com.example.taxi_bot.services.RideService;
+import com.example.taxi_bot.services.TaxiService;
+import com.example.taxi_bot.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -26,7 +28,10 @@ public class TaxiRideFacade {
     private GeoPositionService geoPositionService;
 
     @Autowired
-    private RideRepo rideRepo;
+    private RideService rideService;
+
+    @Autowired
+    private UserService userService;
 
     public String getRideInfo(TaxiSearchRequestData data, Message message) {
         Coordinates startPoint = geoPositionService.getCoordinates(data.getPickup());
@@ -34,14 +39,9 @@ public class TaxiRideFacade {
         Map<String, List<RidePrice>> ridePricesMap = aggregateRidePrice(startPoint, endPoint);
         List<RidePrice> ridePrices = new ArrayList<>();
         ridePricesMap.values().forEach(ridePrices::addAll);
-        Ride ride = Ride.builder()
-                .pickupPoint(data.getPickup())
-                .endPoint(data.getDestination())
-                .dateDepart(LocalDate.now())
-                .ridePrices(ridePrices)
-                .user(getUser(message))
-                .build();
-        rideRepo.save(ride);
+        Ride ride = rideService.createRide(data, message, ridePrices);
+        userService.saveUser(userService.createUser(message));
+        rideService.save(ride);
         return ridePricesMapToString(ridePricesMap);
     }
 
@@ -55,13 +55,6 @@ public class TaxiRideFacade {
             }
         }
         return ridePricesMap;
-    }
-
-    private User getUser(Message message) {
-        return User.builder()
-                .telegramId(message.getFrom().getId())
-                .name(message.getFrom().getUserName())
-                .build();
     }
 
     private String ridePricesMapToString(Map<String, List<RidePrice>> ridePriceMap) {

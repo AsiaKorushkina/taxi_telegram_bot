@@ -34,32 +34,32 @@ public class CitymobilTaxiService implements TaxiService {
     private Map<String, Object> body = new HashMap<>();
 
     @Value("${citymobil.body}")
-    private String CitymobilBody;
+    private String citymobilBody;
 
-    @Value("${Citymobil.url}")
-    private String CitymobilUrl;
+    @Value("${citymobil.url}")
+    private String citymobilUrl;
 
     private final RestTemplate restTemplate;
 
     @SneakyThrows
     @PostConstruct
     public void initBody() {
-        body = new ObjectMapper().readValue(CitymobilBody, HashMap.class);
+        body = new ObjectMapper().readValue(citymobilBody, HashMap.class);
     }
 
     @Override
     public List<RidePrice> getRideInfo(Coordinates startPoint, Coordinates endPoint) {
         Map<String, Object> body = getBody(startPoint, endPoint);
-        ResponseEntity<String> exchange = restTemplate.exchange(CitymobilUrl, HttpMethod.POST, new HttpEntity<>(body), String.class);
+        ResponseEntity<String> exchange = restTemplate.exchange(citymobilUrl, HttpMethod.POST, new HttpEntity<>(body), String.class);
         return extractPrises(exchange.getBody());
     }
 
     private Map<String, Object> getBody(Coordinates startPoint, Coordinates endPoint) {
         Map<String, Object> res = new HashMap(body);
-        res.put(LATITUDE, startPoint.getLatitude());
-        res.put(LONGITUDE, startPoint.getLongitude());
-        res.put(DEL_LATITUDE, endPoint.getLatitude());
-        res.put(DEL_LONGITUDE, endPoint.getLongitude());
+        res.put(LATITUDE, startPoint.getLongitude());
+        res.put(LONGITUDE, startPoint.getLatitude());
+        res.put(DEL_LATITUDE, endPoint.getLongitude());
+        res.put(DEL_LONGITUDE, endPoint.getLatitude());
         return res;
     }
 

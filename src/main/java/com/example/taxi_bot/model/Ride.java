@@ -26,7 +26,6 @@ public class Ride {
     @OneToMany(mappedBy = "ride", fetch = FetchType.EAGER)
     private List<RidePrice> ridePrices;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
-    private User user;
+    private int userId;
 
 }

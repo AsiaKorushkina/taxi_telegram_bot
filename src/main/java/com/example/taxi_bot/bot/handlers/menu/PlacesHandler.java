@@ -5,7 +5,7 @@ import com.example.taxi_bot.bot.BotState;
 import com.example.taxi_bot.bot.MessageHandler;
 import com.example.taxi_bot.bot.UserData;
 import com.example.taxi_bot.bot.handlers.search_handler.TaxiSearchRequestData;
-import com.example.taxi_bot.services.MessageServices;
+import com.example.taxi_bot.services.impl.MessageServices;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,6 +50,5 @@ public class PlacesHandler implements MessageHandler {
         userData.setUsersBotStates(id, BotState.DEFAULT);
         return messageServices.getSendMessage(message.getChatId(),stringBuilder.toString());
     }
-
 
 }
