@@ -29,14 +29,4 @@ public class Ride {
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private User user;
 
-    @Override
-    public String toString(){
-        StringBuilder res = new StringBuilder();
-        for (RidePrice ridePrice : ridePrices) {
-            res = res.append(ridePrice.getAggregator() + " " + ridePrice.getClassTaxi() + " " + ridePrice.getPrice() + "\n");
-        }
-        return String.valueOf(res);
-
-    }
-
 }

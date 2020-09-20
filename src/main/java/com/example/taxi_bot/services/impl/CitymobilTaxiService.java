@@ -1,5 +1,6 @@
 package com.example.taxi_bot.services.impl;
 
+import com.example.taxi_bot.model.Aggregator;
 import com.example.taxi_bot.model.Coordinates;
 import com.example.taxi_bot.model.RidePrice;
 import com.example.taxi_bot.services.TaxiService;
@@ -23,34 +24,33 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class CitymobileTaxiService implements TaxiService {
+public class CitymobilTaxiService implements TaxiService {
 
     private static final String LATITUDE = "latitude";
     private static final String LONGITUDE = "longitude";
     private static final String DEL_LATITUDE = "del_latitude";
     private static final String DEL_LONGITUDE = "del_longitude";
-    private static final String CITYMOBILE_TAXI = "Citymobile Taxi";
 
     private Map<String, Object> body = new HashMap<>();
 
-    @Value("${citymobile.body}")
-    private String citymobileBody;
+    @Value("${citymobil.body}")
+    private String CitymobilBody;
 
-    @Value("${citymobile.url}")
-    private String citymobileUrl;
+    @Value("${Citymobil.url}")
+    private String CitymobilUrl;
 
     private final RestTemplate restTemplate;
 
     @SneakyThrows
     @PostConstruct
     public void initBody() {
-        body = new ObjectMapper().readValue(citymobileBody, HashMap.class);
+        body = new ObjectMapper().readValue(CitymobilBody, HashMap.class);
     }
 
     @Override
     public List<RidePrice> getRideInfo(Coordinates startPoint, Coordinates endPoint) {
         Map<String, Object> body = getBody(startPoint, endPoint);
-        ResponseEntity<String> exchange = restTemplate.exchange(citymobileUrl, HttpMethod.POST, new HttpEntity<>(body), String.class);
+        ResponseEntity<String> exchange = restTemplate.exchange(CitymobilUrl, HttpMethod.POST, new HttpEntity<>(body), String.class);
         return extractPrises(exchange.getBody());
     }
 
@@ -79,7 +79,7 @@ public class CitymobileTaxiService implements TaxiService {
                     RidePrice.builder()
                             .price(price)
                             .classTaxi(classTaxiName)
-                            .aggregator(CITYMOBILE_TAXI)
+                            .aggregator(Aggregator.CITY_MOBIL)
                             .build()
             );
         }

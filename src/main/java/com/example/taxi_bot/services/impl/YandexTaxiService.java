@@ -1,5 +1,6 @@
 package com.example.taxi_bot.services.impl;
 
+import com.example.taxi_bot.model.Aggregator;
 import com.example.taxi_bot.model.Coordinates;
 import com.example.taxi_bot.model.RidePrice;
 import com.example.taxi_bot.services.TaxiService;
@@ -26,7 +27,6 @@ import java.util.Map;
 public class YandexTaxiService implements TaxiService {
 
     private static final String ROUTE = "route";
-    private static final String YANDEX_TAXI = "Yandex Taxi";
 
     private Map<String, Object> body = new HashMap<>();
 
@@ -65,7 +65,7 @@ public class YandexTaxiService implements TaxiService {
                     RidePrice.builder()
                             .price(price)
                             .classTaxi(classTaxiName)
-                            .aggregator(YANDEX_TAXI)
+                            .aggregator(Aggregator.YANDEX_TAXI)
                             .build()
             );
         }

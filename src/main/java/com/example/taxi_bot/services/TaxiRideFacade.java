@@ -12,7 +12,9 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class TaxiRideFacade {
@@ -29,7 +31,9 @@ public class TaxiRideFacade {
     public String getRideInfo(TaxiSearchRequestData data, Message message) {
         Coordinates startPoint = geoPositionService.getCoordinates(data.getPickup());
         Coordinates endPoint = geoPositionService.getCoordinates(data.getDestination());
-        List<RidePrice> ridePrices = aggregateRidePrice(startPoint, endPoint);
+        Map<String, List<RidePrice>> ridePricesMap = aggregateRidePrice(startPoint, endPoint);
+        List<RidePrice> ridePrices = new ArrayList<>();
+        ridePricesMap.values().forEach(ridePrices::addAll);
         Ride ride = Ride.builder()
                 .pickupPoint(data.getPickup())
                 .endPoint(data.getDestination())
@@ -38,16 +42,19 @@ public class TaxiRideFacade {
                 .user(getUser(message))
                 .build();
         rideRepo.save(ride);
-        return ride.toString();
+        return ridePricesMapToString(ridePricesMap);
     }
 
 
-    private List<RidePrice> aggregateRidePrice(Coordinates startPoint, Coordinates endPoint){
-        List<RidePrice> ridePrices = new ArrayList<>();
+    private Map<String, List<RidePrice>> aggregateRidePrice(Coordinates startPoint, Coordinates endPoint){
+        Map<String, List<RidePrice>> ridePricesMap = new HashMap<>();
         for (TaxiService taxiService : taxiServices) {
-            ridePrices.addAll(taxiService.getRideInfo(startPoint, endPoint));
+            List<RidePrice> ridePrices = taxiService.getRideInfo(startPoint, endPoint);
+            if(!ridePrices.isEmpty() && ridePrices.get(0).getAggregator() != null) {
+                ridePricesMap.put(ridePrices.get(0).getAggregator().name(), ridePrices);
+            }
         }
-        return ridePrices;
+        return ridePricesMap;
     }
 
     private User getUser(Message message) {
@@ -56,5 +63,18 @@ public class TaxiRideFacade {
                 .name(message.getFrom().getUserName())
                 .build();
     }
+
+    private String ridePricesMapToString(Map<String, List<RidePrice>> ridePriceMap) {
+        StringBuilder res = new StringBuilder();
+        for (String agr : ridePriceMap.keySet()) {
+            List<RidePrice> ridePrices = ridePriceMap.get(agr);
+            res.append("\n").append(agr).append("\n");
+            for (RidePrice ridePrice : ridePrices) {
+                res.append(ridePrice.getClassTaxi()).append(" ").append(ridePrice.getPrice()).append("\n");
+            }
+        }
+        return String.valueOf(res);
+    }
+
 
 }
